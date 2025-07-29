@@ -19,6 +19,10 @@ Spice&Veggie is a full-stack e-commerce platform built with Django and Tailwind 
 - User registration & login/logout with styled UI
 - Tailwind-powered responsive design
 
+## Login Credentials
+Username: Haseeb
+Password: Alan@12321#
+
 ## 📦 Setup Instructions
 
 ```bash
