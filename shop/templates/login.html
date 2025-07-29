@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Signup - Spice & Veggie</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; }
+    label, input, button { display: block; width: 100%; margin-bottom: 15px; }
+    input, button { padding: 10px; font-size: 1rem; }
+  </style>
+</head>
+<body>
+{% load static %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-12 p-6 bg-white rounded shadow">
+  <h2 class="text-xl font-semibold mb-6">Login</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <p class="text-red-500">{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="mb-4">
+      <label class="block text-sm mb-1">Username</label>
+      <input type="text" name="username" class="w-full border px-3 py-2 rounded" required>
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm mb-1">Password</label>
+      <input type="password" name="password" class="w-full border px-3 py-2 rounded" required>
+    </div>
+    <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+      Login
+    </button>
+  </form>
+    <p>Don't have an account? <a href="{% url 'sign_up' %}">Sign up here</a></p>
+</div>
+{% endblock %}
+
+</body>
+</html>

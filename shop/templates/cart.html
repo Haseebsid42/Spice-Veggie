@@ -1,0 +1,151 @@
+<html>
+
+<head>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+  <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
+    href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" />
+
+  <title>Stitch Design</title>
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+</head>
+
+<body>
+  <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden"
+    style='font-family: Inter, "Noto Sans", sans-serif;'>
+    <div class="layout-container flex h-full grow flex-col">
+      <header
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf4] px-10 py-3">
+        <div class="flex items-center gap-8">
+          <div class="flex items-center gap-4 text-[#0d141c]">
+            <div class="size-4">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z"
+                  fill="currentColor"></path>
+              </svg>
+            </div>
+            <a class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em]" href="/">Spice & Veggie</a>
+          </div>
+          <div class="flex items-center gap-9">
+            <a class="text-[#0d141c] text-sm font-medium leading-normal" href="{% url 'product_list' %}">Spices</a>
+            <a class="text-[#0d141c] text-sm font-medium leading-normal"
+              href="{% url 'vegetable_list' %}">Vegetables</a>
+            <a class="text-[#0d141c] text-sm font-medium leading-normal" href="{% url 'fruit_list' %}">Fruits</a>
+            <!-- <a class="text-[#0d141c] text-sm font-medium leading-normal" href="#">Logout</Fa> -->
+            {% if user.is_authenticated %}
+            <p class="text-sm">Welcome, {{ user.username }}</p>
+            <a href="{% url 'logout' %}"
+              class="text-red-600 text-[#0d141c] text-sm font-medium leading-normal">Logout</a>
+            {% else %}
+            <a class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-bold leading-normal tracking-[0.015em]"
+              href="{% url 'login' %}" class="text-blue-600">Login</a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="flex flex-1 justify-end gap-8">
+          <label class="flex flex-col min-w-40 !h-10 max-w-64">
+            <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+              <div
+                class="text-[#49739c] flex border-none bg-[#e7edf4] items-center justify-center pl-4 rounded-l-lg border-r-0"
+                data-icon="MagnifyingGlass" data-size="24px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor"
+                  viewBox="0 0 256 256">
+                  <path
+                    d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z">
+                  </path>
+                </svg>
+              </div>
+              <input placeholder="Search"
+                class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-full placeholder:text-[#49739c] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
+                value="" />
+            </div>
+          </label>
+          <button
+            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-bold leading-normal tracking-[0.015em]">
+            <span class="truncate">Cart ({{ cart_count }})</span>
+          </button>
+        </div>
+      </header>
+      <div class="px-40 flex flex-1 justify-center py-5">
+        <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+          <div class="flex flex-wrap justify-between gap-3 p-4">
+            <p class="text-[#0d141c] tracking-light text-[32px] font-bold leading-tight min-w-72">Your Cart</p>
+          </div>
+          <!-- cart items -->
+          {% if cart_items %}
+          {% for item in cart_items %}
+          <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2 justify-between">
+            <div class="flex items-center gap-4">
+              <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
+                style='background-image: url("{{ item.item.image_url }}");'>
+              </div>
+              <div class="flex flex-col justify-center">
+                <p class="text-[#0d141c] text-base font-medium leading-normal line-clamp-1">{{ item.item.name }}</p>
+                <p class="text-[#49739c] text-sm font-normal leading-normal line-clamp-2">₹{{ item.item.price }}</p>
+              </div>
+            </div>
+            <div class="shrink-0">
+              <div class="flex items-center gap-2 text-[#0d141c]">
+                <a href="{% url 'decrease_quantity' item.item_type item.item.id %}"
+                  class="text-base font-medium flex h-7 w-7 items-center justify-center rounded-full bg-[#e7edf4] cursor-pointer">
+                  -
+                </a>
+
+                <input class="text-base p-0 font-medium w-10 text-center bg-transparent border-none focus:outline-none"
+                  type="number" value="{{ item.quantity }}" readonly />
+
+                <a href="{% url 'increase_quantity' item.item_type item.item.id %}"
+                  class="text-base font-medium flex h-7 w-7 items-center justify-center rounded-full bg-[#e7edf4] cursor-pointer">
+                  +
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          <h3 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Order Summary
+          </h3>
+          <div class="p-4">
+            <div class="flex justify-between gap-x-6 py-2">
+              <p class="text-[#49739c] text-sm font-normal leading-normal">Subtotal</p>
+              <p class="text-[#0d141c] text-sm font-normal leading-normal text-right">₹ {{ subtotal }}</p>
+            </div>
+            <div class="flex justify-between gap-x-6 py-2">
+              <p class="text-[#49739c] text-sm font-normal leading-normal">Tax</p>
+              <p class="text-[#0d141c] text-sm font-normal leading-normal text-right">₹ {{ tax }}</p>
+            </div>
+            <div class="flex justify-between gap-x-6 py-2">
+              <p class="text-[#49739c] text-sm font-normal leading-normal">Delivery</p>
+              <p class="text-[#0d141c] text-sm font-normal leading-normal text-right">₹ {{ delivery }}</p>
+            </div>
+            <div class="flex justify-between gap-x-6 py-2">
+              <p class="text-[#49739c] text-sm font-normal leading-normal">Total</p>
+              <p class="text-[#0d141c] text-sm font-normal leading-normal text-right">₹ {{ total }}</p>
+            </div>
+          </div>
+          <div class="flex px-4 py-3 justify-end">
+            <a href="{% url 'checkout' %}">
+              <button
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center bg-gray-400 hover:bg-gray-700 justify-center overflow-hidden rounded-lg h-12 px-5 bg-[#3d98f4] text-slate-50 text-base font-bold leading-normal tracking-[0.015em]">
+                <span class="truncate">Proceed to Checkout</span>
+              </button>
+            </a>
+          </div>
+
+          {% else %}
+          <div class="flex justify-center">
+            <h4 class="text-[#0d141c] tracking-light text-[20px] pb-10 leading-tight min-w-72">Your cart is empty.</h4>
+          </div>
+          <a href="/"
+            class="flex min-w-[40px] max-w-[200px] cursor-pointer items-center bg-gray-400 justify-center overflow-hidden rounded-lg h-12 px-5 bg-[#3d98f4] text-slate-50 text-base font-bold leading-normal tracking-[0.015em]">
+            <span class="truncate">Go to Home Page</span>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
